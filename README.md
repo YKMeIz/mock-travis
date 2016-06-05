@@ -1,6 +1,8 @@
 # Mock-Travis
-
+[![GitHub license](https://img.shields.io/badge/license-GPL%20V3.0-red.svg?style=flat-square)](https://raw.githubusercontent.com/nrechn/bspwm-config/master/LICENSE)
 [![Build Status](http://img.shields.io/travis/nrechn/mock-travis.svg?style=flat-square)](https://travis-ci.org/nrechn/mock-travis)
+[![Go Report Card](https://goreportcard.com/badge/github.com/nrechn/mock-travis)](https://goreportcard.com/report/github.com/nrechn/mock-travis)
+[![Gitter](https://badges.gitter.im/nrechn/mock-travis.svg)](https://gitter.im/nrechn/mock-travis?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Mock-Travis utilizes [Travis CI](https://travis-ci.org/) to provide a continuous integration practice for testing **`spec`** files of RedHat RPM packages. That is to say, Mock-Travis can be utilized to build source rpm packages and binary rpm packages in order to check whether **`spec`** files are written correctly.
 
