@@ -82,7 +82,8 @@ func boldColor(colorOption, msg string) {
 }
 
 func checkDocCon() bool {
-	if _, err := os.Stat("/.dockerinit"); err == nil {
+	// .dockerinit is removed in docker v1.11
+	if _, err := os.Stat("/.dockerenv"); err == nil {
 		return true
 	}
 	return false
