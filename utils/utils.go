@@ -16,53 +16,46 @@
 // along with mock-travis. If not, see <http://www.gnu.org/licenses/>.
 //
 
-package main
+package utils
 
 import (
 	"fmt"
 	"github.com/spf13/viper"
 	"os"
-	"path"
 	"path/filepath"
 )
 
-var (
-	dockerName  string = "mock-build"
-	dockerImage string = "nrechn/fedora-mock"
-	shareDir    string = "/home"
-	rebuildList []string
-	stillFail   []string
-	readTmpDir  string = "/var/tmp/birudo/" // Future compatibility
-	tmpDir      string = path.Dir(readTmpDir + "/")
-	extraRepo   string = `
-[extra-local]
-name=extra-local
-baseurl=` + gyml("mock_travis.packages_extra_repo") + `
-gpgcheck=0
-"""
-`
+func IsContainer() bool {
+	// .dockerinit is removed in docker v1.11
+	if _, err := os.Stat("/.dockerenv"); err == nil {
+		return true
+	}
+	return false
+}
 
-	localRepo string = `
-[mock-local]
-name=mock-local
-baseurl=file://` + tmpDir + `/RPM/
-gpgcheck=0
-"""
-`
-)
-
-func gyml(arg string) string {
+func GetYml(arg string) string {
 	viper.SetConfigName(".travis")
 	viper.AddConfigPath(".")
 	viper.AddConfigPath("/home/")
-	err := viper.ReadInConfig()
-	if err != nil {
+	if err := viper.ReadInConfig(); err != nil {
 		panic(err)
+		os.Exit(1)
 	}
 	return viper.GetString(arg)
 }
 
-func boldColor(colorOption, msg string) {
+func GetYmlSlice(arg string) []string {
+	viper.SetConfigName(".travis")
+	viper.AddConfigPath(".")
+	viper.AddConfigPath("/home/")
+	if err := viper.ReadInConfig(); err != nil {
+		panic(err)
+		os.Exit(1)
+	}
+	return viper.GetStringSlice(arg)
+}
+
+func ColorPrint(colorOption, msg string) {
 	switch colorOption {
 	case "red":
 		fmt.Println("\033[31m\033[1m" + msg + "\033[0m\033[39m")
@@ -81,25 +74,18 @@ func boldColor(colorOption, msg string) {
 	}
 }
 
-func checkDocCon() bool {
-	// .dockerinit is removed in docker v1.11
-	if _, err := os.Stat("/.dockerenv"); err == nil {
-		return true
-	}
-	return false
-}
-
-func currentLocation() string {
+func CurrLoc() string {
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		panic(err)
+		os.Exit(1)
 	}
 	return dir
 }
 
-func mkDir(path string) {
-	err := os.MkdirAll(path, 0755)
-	if err != nil {
+func MkDir(path string) {
+	if err := os.MkdirAll(path, 0755); err != nil {
 		panic(err)
+		os.Exit(1)
 	}
 }

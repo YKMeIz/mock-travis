@@ -3,21 +3,13 @@ language: go
 sudo: false
 
 go:
-  - 1.7.1
+  - 1.7.3
 
 install:
   - go get github.com/codeskyblue/go-sh
   - go get github.com/spf13/viper
 
 script:
-  - cp -r src test && cp .travis.yml test/ && mv test/mock-travis.go test/mock-travis_test.go && go test -v ./test/...
-  - cd src && go build mock-travis.go mock-docker.go common.go
+  - cd $HOME/gopath/src/github.com/nrechn/mock-travis
+  - go test -v ./...
 
-deploy:
-  provider: releases
-  api_key: $GITHUBKEY
-  file: mock-travis
-  skip_cleanup: true
-  overwrite: true
-  on:
-    tags: true

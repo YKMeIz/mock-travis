@@ -25,7 +25,7 @@ Setting up Mock-Travis is quite simple. All you need to do are just two things:
 
 mock_travis:
   # Set a particular test configuration for mock.
-  mock_config: fedora-24-x86_64
+  mock_config: fedora-25-x86_64
 
   # Use RPM spec files from a GitHub repository
   # to generate extra part of buildrequires packages.
