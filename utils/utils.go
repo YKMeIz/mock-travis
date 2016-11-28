@@ -25,36 +25,40 @@ import (
 	"path/filepath"
 )
 
+// Check if program is running inside docker container.
 func IsContainer() bool {
-	// .dockerinit is removed in docker v1.11
+	// .dockerinit is removed in docker v1.11.
+	// Instead, using .dockerenv to determine if
+	// program is running inside docker container.
 	if _, err := os.Stat("/.dockerenv"); err == nil {
 		return true
 	}
 	return false
 }
 
+// Read .travis.yml and retrieve string value given the arg to use.
 func GetYml(arg string) string {
 	viper.SetConfigName(".travis")
 	viper.AddConfigPath(".")
 	viper.AddConfigPath("/home/")
 	if err := viper.ReadInConfig(); err != nil {
-		panic(err)
 		os.Exit(1)
 	}
 	return viper.GetString(arg)
 }
 
+// Read .travis.yml and retrieve slice value given the arg to use.
 func GetYmlSlice(arg string) []string {
 	viper.SetConfigName(".travis")
 	viper.AddConfigPath(".")
 	viper.AddConfigPath("/home/")
 	if err := viper.ReadInConfig(); err != nil {
-		panic(err)
 		os.Exit(1)
 	}
 	return viper.GetStringSlice(arg)
 }
 
+// Output in color.
 func ColorPrint(colorOption, msg string) {
 	switch colorOption {
 	case "red":
@@ -74,18 +78,18 @@ func ColorPrint(colorOption, msg string) {
 	}
 }
 
+// Get current location.
 func CurrLoc() string {
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
-		panic(err)
 		os.Exit(1)
 	}
 	return dir
 }
 
+// Same as `mkdir` command.
 func MkDir(path string) {
 	if err := os.MkdirAll(path, 0755); err != nil {
-		panic(err)
 		os.Exit(1)
 	}
 }

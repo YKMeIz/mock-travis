@@ -27,6 +27,7 @@ import (
 	"strings"
 )
 
+// Entry point of package builds.
 func Init() {
 	setTmpDir()
 	if repo := utils.GetYml("mock_travis.packages_extra_repo"); repo != "" {

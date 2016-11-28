@@ -24,12 +24,12 @@ import (
 	"os"
 )
 
+// Entry point of docker application preparation.
 func Init() {
 	pull()
 	mockCfg := utils.GetYmlSlice("mock_travis.mock_config")
 	for i := 0; i < len(mockCfg); i++ {
 		run(mockCfg[i])
-		clean()
 	}
 }
 
@@ -37,6 +37,7 @@ func run(cfg string) {
 	volLoc := utils.CurrLoc() + "/:" + utils.ShareDir
 	if err := sh.Command("docker",
 		"run",
+		"--rm",
 		"--name",
 		utils.ContainerName,
 		"--cap-add=SYS_ADMIN",
