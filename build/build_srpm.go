@@ -29,6 +29,7 @@ import (
 
 func buildsrpm() {
 	specDir := utils.TmpDir + "/" + "SPEC"
+	_ = filepath.Walk(utils.ShareDir, copyFiles)
 	_ = filepath.Walk(specDir, mockBuildSRPM)
 }
 
@@ -59,5 +60,15 @@ func mockBuildSRPM(filePath string, f os.FileInfo, err error) error {
 		}
 		utils.ColorPrint("green", "Build "+name+" SRPM succeeded ("+utils.MockConfig+").")
 	}
+	return nil
+}
+
+func copyFiles(filePath string, f os.FileInfo, err error) error {
+	src := path.Dir(filePath) + "/" + f.Name()
+	dst := utils.TmpDir + "/source/" + f.Name()
+	if f.IsDir() {
+		return nil
+	}
+	utils.CopyFile(src, dst)
 	return nil
 }

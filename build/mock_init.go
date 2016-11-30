@@ -41,14 +41,14 @@ func Init() {
 
 func setTmpDir() {
 	utils.MkDir(utils.TmpDir)
-	if err := sh.Command("cp", "-r", utils.ShareDir, utils.TmpDir+"/"+"SPEC").Run(); err != nil {
-		utils.ColorPrint("red", "Fail to setup sources to temporary directory.")
-		os.Exit(1)
-	}
 	utils.MkDir(utils.TmpDir + "/" + "SRPM")
 	utils.MkDir(utils.TmpDir + "/" + "RPM")
 	utils.MkDir(utils.TmpDir + "/" + "debugInfo")
 	utils.MkDir(utils.TmpDir + "/" + "source")
+	if err := sh.Command("cp", "-r", utils.ShareDir, utils.TmpDir+"/"+"SPEC").Run(); err != nil {
+		utils.ColorPrint("red", "Fail to setup sources to temporary directory.")
+		os.Exit(1)
+	}
 }
 
 func setRepo(repo string) {

@@ -21,6 +21,7 @@ package utils
 import (
 	"fmt"
 	"github.com/spf13/viper"
+	"io"
 	"os"
 	"path/filepath"
 )
@@ -90,6 +91,31 @@ func CurrLoc() string {
 // Same as `mkdir` command.
 func MkDir(path string) {
 	if err := os.MkdirAll(path, 0755); err != nil {
+		os.Exit(1)
+	}
+}
+
+// Copy file.
+// Note: Destination should contain destination file name.
+func CopyFile(src, dst string) {
+	srcFile, err := os.Open(src)
+	defer srcFile.Close()
+	check(err)
+
+	destFile, err := os.Create(dst)
+	defer destFile.Close()
+	check(err)
+
+	_, err = io.Copy(destFile, srcFile)
+	check(err)
+
+	err = destFile.Sync()
+	check(err)
+}
+
+func check(err error) {
+	if err != nil {
+		fmt.Println("Error : %s", err.Error())
 		os.Exit(1)
 	}
 }
